@@ -1,0 +1,1 @@
+def mostrar_estadisticas(lista): pass
