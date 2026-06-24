@@ -25,7 +25,7 @@ def menu_principal():
         
         opcion = input("Seleccione una opción (1-7): ").strip()
         
-        # Refactorizado con match case
+        # Menu principal programa
         match opcion:
             case "1":
                 gestion_datos.agregar_pais(paises)
@@ -42,7 +42,7 @@ def menu_principal():
             case "7":
                 print("Saliendo del sistema. ¡Buenas noches!")
                 break
-            case _:  # Este es el caso por defecto (el equivalente al 'else')
+            case _:
                 print("Opción inválida. Por favor, elija un número del 1 al 7.")
 if __name__ == "__main__":
     menu_principal()
