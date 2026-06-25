@@ -1,75 +1,60 @@
+import unicodedata
+
+def remover_acentos(texto):
+    """Transforma caracteres con tilde en su versión limpia (ej: América -> America)."""
+    # Descompongo los caracteres con acentos en sus componentes básicos
+    texto_normalizado = unicodedata.normalize('NFD', texto)
+    # Filtro y mantengo solo las letras, eliminando los símbolos de las tildes
+    return "".join(c for c in texto_normalizado if unicodedata.category(c) != 'Mn').lower().strip()
+
 def texto(txt):
+    """Solicita un texto al usuario, valida que no esté vacío y que contenga solo letras."""
     while True:
-        texto = input(txt).strip()
+        input_txt = input(txt).strip()
         
-        if texto == "":
+        # Verifico que el usuario no haya presionado Enter sin escribir nada
+        if input_txt == "":
             print("ERROR: No puede estar vacío.")
-        # Reemplazamos los espacios por nada ("") SOLO para la validación
-        elif not texto.replace(" ", "").isalpha():
+        # Reemplazo temporalmente los espacios para validar que el resto sean solo letras
+        elif not input_txt.replace(" ", "").isalpha():
             print("ERROR: Ingrese solo letras.")
         else:
-            return texto  # Retorna el texto original (con sus espacios intactos)
-def duplicado(txt, diccionario):
-    # Recorremos la lista de diccionarios
-    for p in diccionario:
-        if p["nombre"].lower() == txt.lower():
-            print(f"Error: '{txt}' ya existe en el sistema.")
-            return True # Retorna True si ENCONTRÓ un duplicado
-            
-    return False # Retorna False si recorrió toda la lista y NO hay duplicados
+            # Retorno el texto original con sus espacios correctos
+            return input_txt
+
+def duplicado(txt, lista_paises):
+    """Devuelve True si el país ya existe (ignorando tildes y mayúsculas), False si no."""
+    # Limpio el texto ingresado por el usuario sacando tildes y espacios
+    txt_limpio = remover_acentos(txt)
+    
+    # Recorro la lista de países para comparar uno por uno
+    for p in lista_paises:
+        # Si encuentro una coincidencia exacta sin tildes, aviso del error
+        if remover_acentos(p["nombre"]) == txt_limpio:
+            print(f"Error: El país '{p['nombre']}' ya se encuentra registrado.")
+            return True
+    return False
+
 def entero(txt):
+    """Solicita un número, valida que no esté vacío, que sea entero y positivo."""
     while True:
         entrada = input(txt).strip()
-        # 1. Validamos específicamente si está vacío
+        
+        # Valido específicamente si el campo viene vacío
         if entrada == "":
             print("ERROR: El campo no puede estar vacío. Debe ingresar un número.")
-            continue  # Salta al inicio del bucle para volver a preguntar
+            continue  
+            
         try:
-            # 2. Intentamos convertir a entero
+            # Intento convertir la entrada de texto a un número entero
             numero = int(entrada)
-            # 3. Validamos que no sea negativo
+            # Verifico que el número no sea una cantidad negativa
             if numero < 0:
                 print("ERROR: No se aceptan cantidades negativas para este campo.")
             else:
-                return numero # Si pasó todas las pruebas, devuelve el entero válido
+                # Retorno el número válido si pasó todos los controles
+                return numero 
                 
         except ValueError:
-            # 4. Si falla la conversión, es porque tiene letras, puntos decimales o símbolos
+            # Capturo el error si la conversión falla por letras o decimales
             print("ERROR: Formato inválido. Asegúrese de ingresar SOLO números enteros (sin letras, espacios internos ni decimales).")
-def buscar(busqueda, lista):
-    """Busca por coincidencia parcial o exacta.
-    Devuelve el diccionario encontrado o None."""
-    busqueda = busqueda.lower()
-    coincidencias = []
-    
-    # Filtrar coincidencias
-    for p in lista:
-        if busqueda in p["nombre"].lower():
-            # Si es exacta, vamos directo con este sin mostrar menú
-            if p["nombre"].lower() == busqueda:
-                return p
-            coincidencias.append(p)
-
-    # Validar resultados
-    if not coincidencias:
-        return None
-        
-    if len(coincidencias) == 1:
-        return coincidencias[0]
-        
-    # --- El usuario elige entre las opciones ---
-    print("\nSe encontraron múltiples opciones. Seleccione una:")
-    for i, p in enumerate(coincidencias, start=1):
-        print(f"{i}. {p['nombre']} ({p['continente']})")
-    
-    # Bucle para obligar al usuario a elegir una opción válida
-    while True:
-        # Usamos la lógica de validar entero 
-        opcion = entero("\nSeleccione el número de opción: ")
-        
-        # Validamos que el número esté entre 1 y la cantidad de coincidencias
-        if 1 <= opcion <= len(coincidencias):
-            # Restamos 1 porque las listas en Python empiezan en 0
-            return coincidencias[opcion - 1]
-        else:
-            print(f"ERROR: Opción inválida. Debe ser un número entre 1 y {len(coincidencias)}.")
