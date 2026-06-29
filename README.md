@@ -1,3 +1,5 @@
+link youtube: https://youtu.be/_ii1F_GkNuE
+link pdf: https://drive.google.com/file/d/1PteBZ7XQTEiq9XhZ07-39QSyqRucey3R/view?usp=sharing
 # Enzo_Luciano_Jalil_TPI
  tp integrador UTN programacion 1
 Integrantes y Participación
@@ -30,9 +32,6 @@ El código está estructurado de manera modular para garantizar la escalabilidad
 ## 📊 Dataset Base (`data/paises.csv`)
 El archivo incluye columnas estándar limpias y sin espacios corruptos:
 `nombre,poblacion,superficie,continente`
-
----
-
 ## 💻 Ejemplos de Uso (Entradas y Salidas)
 
 ### Ejemplo 1: Búsqueda Inteligente (Con tildes y coincidencias múltiples)
